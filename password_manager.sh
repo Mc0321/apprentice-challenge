@@ -1,11 +1,11 @@
 #!/bin/bash
 
-password_file="password_BOX.sh.gpg"
+password_file="password_BOX.txt"
 decrypted_file="temp_passwords.txt"
 
 # パスワード追加する関数
 
-add_password() {
+Add_password() {
 	gpg -d "$password_file.gpg" > "$password_file" # 複数管理のために複号化
 	read -p 	"サービス名を入力してください：" service_name
 	read -p 	"ユーザー名を入力してください：" username
@@ -13,7 +13,7 @@ add_password() {
 	echo ""
 	echo ""
 	echo "${service_name}:${username}:${password}" >> "$password_file"
-	gpg -c "$password_file"  # 暗号化_password_file.gpg作成
+	gpg -c "$password_file"  # 暗号化 password_BOX.txt.gpg作成
    rm "$password_file" # 暗号化されていないファイルを削除
    	echo    ""
 	echo 		"パスワードの追加は成功しました。"
@@ -22,7 +22,7 @@ add_password() {
 
 # パスワード取得する関数
 
-get_password() {
+Get_password() {
 	gpg -d "$password_file.gpg" > $decrypted_file  # ファイルを復号化
 	echo    ""
 	read -p 	"サービス名を入力してください：" input_service_name
@@ -47,23 +47,24 @@ get_password() {
 
 # メインメニュー
 while true; do
+    echo    ""
     echo 		"パスワードマネージャーへようこそ！"
     echo 		"次の選択肢から入力してください(Add Password/Get Password/Exit)："
     echo    ""
     read choice
 
     case $choice in
-        "add")
+        "Add Password")
 		echo    ""
-            add_password
+            Add_password
 	    	echo    ""
             ;;
-        "get")
+        "Get Password")
 		echo    ""
-            get_password
+            Get_password
 	    	echo    ""
             ;;
-        "exit")
+        "Exit")
 	    	echo ""
             	echo 	"Thank you!"
             	exit 0
